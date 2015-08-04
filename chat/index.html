@@ -1,0 +1,117 @@
+<html>
+<head>
+
+<style>
+
+      * { margin: 1; padding: 0; box-sizing: border-box; }
+      body { font: 30px Helvetica, Arial; width: 80%; margin-left: auto;margin-right: auto;  }
+      form {
+      background:#f5f5f5;
+      border:1px solid #e6e6e6;
+      color:#444;
+      font-size:80%;
+      position:relative;
+      
+      
+     
+  }
+
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; font-size:100%; }
+      form button { width: 9%; background: #9999FF; border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #9999FF; }
+      div{
+      background:#f5f5f5;
+      border:1px solid #e6e6e6;
+      color:#444;
+      font-size:80%;
+      left:80%;
+      line-height:130%;
+      margin:0 0 0 8px;
+      padding:8px 10px 9px;
+       width:80%;
+      margin-left: auto;
+      margin-right: auto;
+      height: 95%; 
+
+          
+      }
+
+      #Layer1{
+        overflow:scroll;
+        height: 90%; 
+        margin:0 auto;
+        width: 100%;
+        
+        
+      }
+
+
+    </style>
+<!--
+     <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+        <!-- Acción sobre el botón con id=boton y actualizamos el div con id=capa 
+        <script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#Layer1").load('Agenda.html');
+
+    });
+        </script>
+      -->
+   
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <!-- Inicializamos el socket del cliente-->
+    <script> 
+    $(document).ready(function() {
+
+      var socket =io();
+
+      nombre =prompt('Introduce tu nombre','Nombre de Usuario');
+      socket.emit('usuario',nombre);//se envia el usuario ingresado por el usuario al servidor mediante emit con la  clave usuario  y el valor nombre
+      // body...
+                  $('#chat_form').submit(function(e){
+         //se envia el mensaje ingresado por el usuario al servidor mediante emit con la  clave message  y el valor $('#m').val() que es enviado como valor
+          socket.emit('message',$('#m').val());
+          //se limpia lo que esta almacenado en $('#m').val()
+         $('#m').val('');
+         return false;
+        });
+
+        //Socket.on lo que hace es escuchar al servidor que le esta enviando con la clave response y el valor data el mensaje enviado por los usuarios
+        socket.on('response',function(data) {
+            $('#messages').append($('<li><h1>').text(data));
+        });
+    });
+
+
+
+
+
+    </script>
+
+</head>
+<body>
+
+  <div>
+    <center><h2 style="color:blue">ChatSocketIO</h2></center>
+    <div id="Layer1" overflow:"scroll">
+      
+    <ul id="messages" ></ul>
+    </div>
+
+    <form id="chat_form" >
+      
+      <input id="m" autocomplete="off" /><button type="submit">Enviar</button>
+
+    </form>
+  
+  </div>
+</body>
+
+
+</html>
